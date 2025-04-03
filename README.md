@@ -2,7 +2,9 @@
 
 teacher_bell은 dart를 이용해 만든앱, 웹 입니다.
 
-https://www.flutter.dev를 참고해주세요.
+dart, flutter에 대해 공부하시려면  https://www.flutter.dev 를 참고해주세요.
+
+예제페이지는 https://esungilapi.iwinv.net/tc 입니다.
 
 supabase를 데이터베이스로 활용하여 제작되었습니다.
 
