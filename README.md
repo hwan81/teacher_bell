@@ -12,9 +12,10 @@ supabase를 데이터베이스로 활용하여 제작되었습니다.
 그리고 상업적 목적으로 활용을 금지합니다. dart 공부를 위해 활용해주시기 바랍니다.
 
 데이터베이스를 위해 supabase api key가 필요합니다.
+<code>
 String supabaseUrl = 'SUPABASEURL';
 String supabaseKey = 'SUPABASEKEY';
-
+</code>
 데이터 베이스 테이블 정보입니다.
 
 (리얼타임 기능켜기)
