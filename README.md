@@ -28,6 +28,7 @@ create table public.teacher_bell_alarm (
   finished boolean not null default false,
   finished_at timestamp without time zone null,
   teacher character varying not null,
+  email text null,
   constraint teacher_bell_alarm_pkey primary key (id)
 ) TABLESPACE pg_default;
 
