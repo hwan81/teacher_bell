@@ -21,6 +21,7 @@ create table public.teacher_bell_alarm (
   finished boolean not null default false,
   finished_at timestamp without time zone null,
   teacher character varying not null,
+  email text null,
   constraint teacher_bell_alarm_pkey primary key (id)
 ) TABLESPACE pg_default;
 
@@ -272,7 +273,8 @@ class _ScreenMainState extends State<ScreenMain> {
 
                 List<String> teacherList = [];
                 for (var k in alarms) {
-                  if (k['finished'] == false) {
+                  if (k['finished'] == false &&
+                      k['email'] == user!.user.email) {
                     teacherList.add(k['teacher'].toString());
                   }
                 }
@@ -291,7 +293,9 @@ class _ScreenMainState extends State<ScreenMain> {
                     runSpacing: 10,
                     children: [
                       for (var alarm in alarms.where(
-                        (alarm) => alarm['finished'] == false,
+                        (alarm) =>
+                            (alarm['finished'] == false &&
+                                alarm['email'] == user!.user.email),
                       ))
                         Container(
                           width: containerWidth,
@@ -471,7 +475,6 @@ class _CallMainState extends State<CallMain> {
       stream: Supabase.instance.client
           .from('teacher_bell_alarm')
           .stream(primaryKey: ['id'])
-          // .eq('finished', false)
           .order('created_at', ascending: false),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -489,7 +492,13 @@ class _CallMainState extends State<CallMain> {
 
         // finished가 false인 항목만 필터링
         final activeAlarms =
-            alarms.where((alarm) => alarm['finished'] == false).toList();
+            alarms
+                .where(
+                  (alarm) =>
+                      (alarm['finished'] == false &&
+                          alarm['email'] == user!.user.email),
+                )
+                .toList();
         if (activeAlarms.isEmpty) {
           return const Center(child: Text('호출 중인 선생님이 없습니다'));
         }
@@ -586,6 +595,7 @@ class _CallMainState extends State<CallMain> {
           try {
             await Supabase.instance.client.from('teacher_bell_alarm').insert({
               'teacher': teacher,
+              'email': user!.user.email,
             });
 
             ScaffoldMessenger.of(
